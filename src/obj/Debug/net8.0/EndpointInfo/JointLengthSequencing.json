@@ -1,0 +1,96 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "JointLengthSequencing",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/JointLength": {
+      "post": {
+        "tags": [
+          "JointLengthEndpointDefinition"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlignmentDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "JointLengthSequencing"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlignmentDataRequest": {
+        "type": "object",
+        "properties": {
+          "baseData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "targetData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { }
+            },
+            "nullable": true
+          },
+          "pivotPercentile": {
+            "type": "number",
+            "format": "double"
+          },
+          "tolerance": {
+            "type": "number",
+            "format": "double"
+          },
+          "pivotRequired": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "baseLengthCol": {
+            "type": "string",
+            "nullable": true
+          },
+          "targetLengthCol": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

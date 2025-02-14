@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>JointLengthSequencing</RootNamespace>
+    <AssemblyName>JointLengthSequencing</AssemblyName>
+    <PackageId>JointLengthSequencing</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Wei Li</Authors>
+    <Product>JointLengthSequencing</Product>
+    <Description>A jointlengthsequencing project that uses minimal API structure.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.1" />
+  </ItemGroup>
+</Project>
