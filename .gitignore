@@ -1,4 +1,4 @@
-/.qodo
-/.vs
+.qodo
+.vs
 src/bin
 src/obj

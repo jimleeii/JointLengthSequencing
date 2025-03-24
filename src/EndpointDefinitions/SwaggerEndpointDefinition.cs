@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using EndpointDefinition;
 using Microsoft.OpenApi.Models;
 
 namespace JointLengthSequencing.EndpointDefinitions;

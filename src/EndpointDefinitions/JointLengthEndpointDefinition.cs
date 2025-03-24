@@ -1,3 +1,4 @@
+using EndpointDefinition;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JointLengthSequencing.EndpointDefinitions;

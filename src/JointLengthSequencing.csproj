@@ -10,8 +10,10 @@
     <Authors>Wei Li</Authors>
     <Product>JointLengthSequencing</Product>
     <Description>A jointlengthsequencing project that uses minimal API structure.</Description>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="EndpointDefinition" Version="1.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />

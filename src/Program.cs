@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using EndpointDefinition;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
