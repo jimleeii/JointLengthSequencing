@@ -8,19 +8,30 @@ namespace JointLengthSequencing.EndpointDefinitions;
 /// </summary>
 public class JointLengthEndpointDefinition : IEndpointDefinition
 {
+    private ILogger<JointLengthEndpointDefinition>? Logger;
+
     /// <summary>
     /// Defines the endpoints.
     /// </summary>
     /// <param name="app">The app.</param>
-    /// <param name="evnt">The environment.</param>
-    public void DefineEndpoints(WebApplication app, IWebHostEnvironment evnt)
+    /// <param name="env">The environment.</param>
+    public void DefineEndpoints(WebApplication app, IWebHostEnvironment env)
     {
+        // Define endpoints
         app.MapPost("/api/v{version:apiVersion}/JointLength", AlignAsync)
             .WithMetadata(
                 new ApiVersionAttribute("1.0"),
                 new ApiVersionAttribute("2.0"),
                 new ApiVersionAttribute("3.0")
             );
+
+        // Define different endpoints based on environment
+        if (env.IsDevelopment())
+        {
+            app.MapGet("/api/JointLength/debug", () => "Debug endpoint");
+            // Log configuration
+            Logger!.LogInformation("Configuration: {Config}", Config.GetConfig());
+        }
     }
 
     /// <summary>
@@ -29,6 +40,8 @@ public class JointLengthEndpointDefinition : IEndpointDefinition
     /// <param name="services">The service collection to which the services are added.</param>
     public void DefineServices(IServiceCollection services)
     {
+        Logger = services.BuildServiceProvider().GetRequiredService<ILogger<JointLengthEndpointDefinition>>();
+
         services.AddSingleton<JointLengthSequencer>();
         services.AddSingleton<JointLengthSequencer2>();
         services.AddSingleton<JointLengthSequencer3>();

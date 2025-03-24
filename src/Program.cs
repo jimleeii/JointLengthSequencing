@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddEndpointDefinitions(typeof(IEndpointDefinition));
+builder.Services.AddEndpointDefinitions(typeof(Program));
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
-	options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+    options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
 });
 builder.Services.AddApiVersioning(options =>
 {

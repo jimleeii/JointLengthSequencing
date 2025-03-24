@@ -17,10 +17,10 @@ public class SwaggerEndpointDefinition : IEndpointDefinition
 	/// Defines the endpoints.
 	/// </summary>
 	/// <param name="app">The app.</param>
-	/// <param name="evnt">The environment.</param>
-	public void DefineEndpoints(WebApplication app, IWebHostEnvironment evnt)
+	/// <param name="env">The environment.</param>
+	public void DefineEndpoints(WebApplication app, IWebHostEnvironment env)
 	{
-		if (evnt.IsDevelopment())
+		if (env.IsDevelopment())
 		{
 			app.UseDeveloperExceptionPage();
 
