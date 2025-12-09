@@ -16,7 +16,7 @@ public class JointLengthSequencer : IJointLengthSequencer
 	/// <param name="baseLengthCol">The column name for the length of each joint in the base dataset. Defaults to "length".</param>
 	/// <param name="targetLengthCol">The column name for the length of each joint in the target dataset. Defaults to "length".</param>
 	/// <returns>A list of joint match results, where each result contains the index of the corresponding joint in the base dataset and the target dataset.</returns>
-	public Task<List<JointMatchResult>> CalculateMatches(
+	public async Task<List<JointMatchResult>> CalculateMatches(
 		List<Dictionary<string, object>> baseData,
 		List<Dictionary<string, object>> targetData,
 		double pivotPercentile = 0.1,
@@ -25,14 +25,20 @@ public class JointLengthSequencer : IJointLengthSequencer
 		string baseLengthCol = "length",
 		string targetLengthCol = "length")
 	{
-		var baseJoints = ProcessDataset(baseData, baseLengthCol);
-		var targetJoints = ProcessDataset(targetData, targetLengthCol);
+		// Process datasets asynchronously to avoid blocking
+		var baseJointsTask = Task.Run(() => ProcessDataset(baseData, baseLengthCol));
+		var targetJointsTask = Task.Run(() => ProcessDataset(targetData, targetLengthCol));
+
+		await Task.WhenAll(baseJointsTask, targetJointsTask);
+
+		var baseJoints = await baseJointsTask;
+		var targetJoints = await targetJointsTask;
 
 		var basePivots = SelectPivots(baseJoints, pivotPercentile, pivotRequired, tolerance);
 		var targetPivots = SelectPivots(targetJoints, pivotPercentile, pivotRequired, tolerance);
 
 		if (basePivots == null || targetPivots == null)
-			return Task.FromResult(new List<JointMatchResult>());
+			return new List<JointMatchResult>();
 
 		var alignedPivotPairs = AlignPivots(basePivots, targetPivots, tolerance);
 		var allMatches = new List<JointMatchResult>();
@@ -65,7 +71,7 @@ public class JointLengthSequencer : IJointLengthSequencer
 			allMatches.AddRange(segmentMatches);
 		}
 
-		return Task.FromResult(allMatches);
+		return allMatches;
 	}
 
 	/// <summary>
@@ -77,10 +83,19 @@ public class JointLengthSequencer : IJointLengthSequencer
 	private static List<Joint> ProcessDataset(List<Dictionary<string, object>> data, string lengthColumn)
 	{
 		return [.. data
-			.Select((row, idx) => new Joint
+			.Select((row, idx) =>
 			{
-				OriginalIndex = idx,
-				Length = Convert.ToDouble(row[lengthColumn].ToString())
+				if (!row.ContainsKey(lengthColumn))
+					throw new ArgumentException($"Column '{lengthColumn}' not found in dataset at index {idx}");
+
+				if (!double.TryParse(row[lengthColumn]?.ToString(), out double length))
+					throw new ArgumentException($"Invalid length value at index {idx}: {row[lengthColumn]}");
+
+				return new Joint
+				{
+					OriginalIndex = idx,
+					Length = length
+				};
 			})
 			.OrderBy(j => j.Length)];
 	}

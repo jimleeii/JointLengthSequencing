@@ -1,22 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JointLengthSequencing", "src\JointLengthSequencing.csproj", "{A345F5EB-63CA-4CF6-A43D-66FF4C51242B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JointLengthSequencing.Tests", "tests\JointLengthSequencing.Tests\JointLengthSequencing.Tests.csproj", "{5211C7F0-0E5D-489B-8D7F-A770E09A03A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A345F5EB-63CA-4CF6-A43D-66FF4C51242B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A345F5EB-63CA-4CF6-A43D-66FF4C51242B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A345F5EB-63CA-4CF6-A43D-66FF4C51242B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A345F5EB-63CA-4CF6-A43D-66FF4C51242B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5211C7F0-0E5D-489B-8D7F-A770E09A03A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5211C7F0-0E5D-489B-8D7F-A770E09A03A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5211C7F0-0E5D-489B-8D7F-A770E09A03A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5211C7F0-0E5D-489B-8D7F-A770E09A03A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
