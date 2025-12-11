@@ -21,7 +21,7 @@ public class JointLengthSequencer3 : IJointLengthSequencer
 	/// <param name="baseLengthCol">The column name for the length of each joint in the base dataset. Defaults to "length".</param>
 	/// <param name="targetLengthCol">The column name for the length of each joint in the target dataset. Defaults to "length".</param>
 	/// <returns>A list of joint match results, where each result contains the index of the corresponding joint in the base dataset and the target dataset.</returns>
-	public async Task<List<JointMatchResult>> CalculateMatches(
+	public Task<List<JointMatchResult>> CalculateMatches(
 		List<Dictionary<string, object>> baseData,
 		List<Dictionary<string, object>> targetData,
 		double pivotPercentile = 0.1,
@@ -31,25 +31,26 @@ public class JointLengthSequencer3 : IJointLengthSequencer
 		string targetLengthCol = "length")
 	{
 		if (baseData?.Count == 0 || targetData?.Count == 0)
-			return new List<JointMatchResult>();
+			return Task.FromResult(new List<JointMatchResult>());
 
-		// Process both datasets in parallel
-		var baseJointsTask = Task.Run(() => ProcessDataset(baseData!, baseLengthCol));
-		var targetJointsTask = Task.Run(() => ProcessDataset(targetData!, targetLengthCol));
-		await Task.WhenAll(baseJointsTask, targetJointsTask);
+		// Process both datasets in parallel using CPU-bound parallelism
+		List<Joint> baseJoints = null!;
+		List<Joint> targetJoints = null!;
 
-		var baseJoints = await baseJointsTask;
-		var targetJoints = await targetJointsTask;
+		Parallel.Invoke(
+			() => baseJoints = ProcessDataset(baseData!, baseLengthCol),
+			() => targetJoints = ProcessDataset(targetData!, targetLengthCol)
+		);
 
 		var basePivots = SelectPivots(baseJoints, pivotPercentile, pivotRequired, tolerance);
 		var targetPivots = SelectPivots(targetJoints, pivotPercentile, pivotRequired, tolerance);
 
 		if (basePivots == null || targetPivots == null || basePivots.Count < pivotRequired || targetPivots.Count < pivotRequired)
-			return new List<JointMatchResult>();
+			return Task.FromResult(new List<JointMatchResult>());
 
 		var alignedPivotPairs = AlignPivots(basePivots, targetPivots, tolerance);
 		if (alignedPivotPairs.Count == 0)
-			return new List<JointMatchResult>();
+			return Task.FromResult(new List<JointMatchResult>());
 
 		var allMatches = new List<JointMatchResult>(alignedPivotPairs.Count * 2);
 
@@ -83,7 +84,7 @@ public class JointLengthSequencer3 : IJointLengthSequencer
 		foreach (var matches in segmentResults)
 			allMatches.AddRange(matches);
 
-		return allMatches;
+		return Task.FromResult(allMatches);
 	}
 
 	/// <summary>
